@@ -1,0 +1,2 @@
+# Lpp
+Lazysoft C++ Library
