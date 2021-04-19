@@ -58,20 +58,7 @@ void Lpp::Http::request(){
         }
     }
     if(this->method.size() != 0){
-/*
-        this->request_url = buffer_temp.substring(this->method+" ", " HTTP");
-        this->path = Lpp::string::substring(" "+this->request_url, " ", "?");
-        if(this->path.size() == 0) this->path = this->request_url;
-        this->str_params = Lpp::string::substring(this->request_url+" ", "?", " ");
-        this->version = std::stof(buffer_temp.substring("HTTP/", "\r\n"));
 
-        std::string content_length = buffer_temp.substring("Content-Length: ", "\r\n");
-        if(content_length.size() == 0) this->content_length = 0;
-        else this->content_length = std::stoi(content_length);
-
-        this->message = buffer_temp.substring("\r\n\r\n", "\r\n");
-*/
-        
         this->request_url = buffer_temp.substr(this->method+" ", " HTTP");
         this->path = Lpp::string::substr(" "+this->request_url, " ", "?");
         if(this->path.size() == 0) this->path = this->request_url;
@@ -81,21 +68,34 @@ void Lpp::Http::request(){
         std::string content_length = buffer_temp.substr("Content-Length: ", "\r\n");
         if(content_length.size() == 0) this->content_length = 0;
         else this->content_length = std::stoi(content_length);
-
         this->message = buffer_temp.substr("\r\n\r\n", "\r\n");
 
         if(this->method.compare("POST") == 0 && this->str_params.size() == 0) this->str_params = this->message;
-        if(this->str_params.size() > 0){
-            std::vector<Lpp::string> params = this->str_params.explode("&");
-            std::vector<Lpp::string> key_value;
-            for(int i = 0; i < params.size(); i++){
-                key_value = params[i].explode("=");
-                this->params[key_value[0]] = key_value[1];
-                key_value.clear();
-            }
-        }
+        
+        this->params = this->mapParams(this->str_params);
     }
 }
+
+std::map<Lpp::string, Lpp::string> Lpp::Http::mapParams(Lpp::string str_params){
+    std::map<Lpp::string, Lpp::string> result;
+    Lpp::string value;
+    if(str_params.size() > 0){
+        std::vector<Lpp::string> params = str_params.explode("&");
+        std::vector<Lpp::string> key_value;
+        for(int i = 0; i < params.size(); i++){
+            key_value = params[i].explode("=");
+
+            if(key_value.size() == 2 || key_value.size() == 1){
+                if(key_value.size() == 1) value = "";
+                else value = key_value[1];
+                result[key_value[0]] = value;
+            }
+            key_value.clear();
+        }
+    }
+    return result;
+}
+
 Lpp::string Lpp::Http::getUrl(){
     return this->request_url;
 }

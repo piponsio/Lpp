@@ -8,6 +8,7 @@ void LppTest::TestString(){
 	Lpp::string string_test2("0303426");
 	Lpp::string string_test3 = string_test2 + ".5";
 	Lpp::string string_test4("-0303426");
+	Lpp::string string_test5("test=1&xaca=10&www=&pq");
 
 	setClass("Lpp::string");
 
@@ -29,6 +30,9 @@ void LppTest::TestString(){
 	test(string_test3.isFloat());
 	test(!string_test.isFloat());
 	test(string_test.substr("ni el ", " xxd").isFloat());
+
+	setMethod("std::vector<Lpp::string> explode(Lpp::string)");
+	//PENDING
 
 	end();
 }

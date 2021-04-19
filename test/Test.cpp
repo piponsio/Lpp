@@ -3,6 +3,7 @@
 int main(){
 
 	LppTest::TestString();
+	LppTest::TestHttp();
 
 	return 0;
 }

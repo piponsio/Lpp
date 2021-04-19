@@ -57,6 +57,9 @@ namespace Lpp{
 			Lpp::string message;
 
 			std::vector<Lpp::string> methods = {"OPTIONS", "GET", "HEAD", "POST", "PUT", "DELETE", "TRACE"};
+
+		protected:
+			std::map<Lpp::string, Lpp::string> mapParams(Lpp::string str_params);
 	};
 }
 #endif
